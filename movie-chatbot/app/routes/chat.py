@@ -1,4 +1,6 @@
 import os
+import urllib.request
+import json
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from app.services.script_service import ScriptService
@@ -48,12 +50,31 @@ def generate_script():
 
 @chat_bp.route("/health", methods=["GET"])
 def health_check():
-    """Check if LM Studio is reachable."""
+    """Check if LM Studio is reachable using a direct HTTP call."""
+    base_url = Config.LM_STUDIO_BASE_URL.rstrip("/")
+    models_url = f"{base_url}/models"
     try:
-        llm_service.client.models.list()
-        return jsonify({"status": "connected"})
+        req = urllib.request.Request(models_url, method="GET")
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode())
+            model_ids = [m.get("id", "unknown") for m in data.get("data", [])]
+            return jsonify({
+                "status": "connected",
+                "url": base_url,
+                "models": model_ids,
+            })
+    except urllib.error.URLError as e:
+        return jsonify({
+            "status": "disconnected",
+            "url": base_url,
+            "error": f"Cannot reach LM Studio at {base_url}: {str(e.reason)}",
+        }), 503
     except Exception as e:
-        return jsonify({"status": "disconnected", "error": str(e)}), 503
+        return jsonify({
+            "status": "disconnected",
+            "url": base_url,
+            "error": str(e),
+        }), 503
 
 
 @chat_bp.route("/scripts", methods=["GET"])

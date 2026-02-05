@@ -1,4 +1,5 @@
 from flask import Flask, send_from_directory
+from flask_cors import CORS
 from app.config import Config
 from app.routes.chat import chat_bp
 
@@ -10,6 +11,8 @@ def create_app():
         static_url_path="",
     )
     app.config.from_object(Config)
+
+    CORS(app)
 
     app.register_blueprint(chat_bp, url_prefix="/api")
 

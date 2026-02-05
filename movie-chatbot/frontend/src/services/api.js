@@ -42,9 +42,16 @@ export async function generateScript({ messages, pageCount }) {
 export async function checkHealth() {
   try {
     const res = await fetch(`${API_BASE}/health`);
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      return { connected: false, error: data.error || `Flask returned ${res.status}` };
+    }
     const data = await res.json();
-    return data.status === 'connected';
-  } catch {
-    return false;
+    if (data.status === 'connected') {
+      return { connected: true, models: data.models || [] };
+    }
+    return { connected: false, error: data.error || 'LM Studio disconnected' };
+  } catch (e) {
+    return { connected: false, error: `Cannot reach Flask backend: ${e.message}` };
   }
 }

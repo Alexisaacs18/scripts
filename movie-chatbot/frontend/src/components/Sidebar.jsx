@@ -8,18 +8,20 @@ import './Sidebar.css';
 export default function Sidebar() {
   const { state, dispatch } = useChat();
   const [scriptsOpen, setScriptsOpen] = useState(false);
-  const [connected, setConnected] = useState(null);
+  const [health, setHealth] = useState(null);
 
   useEffect(() => {
-    checkHealth().then(setConnected);
-    const interval = setInterval(() => checkHealth().then(setConnected), 15000);
+    const check = () => checkHealth().then(setHealth);
+    check();
+    const interval = setInterval(check, 15000);
     return () => clearInterval(interval);
   }, []);
 
+  const isConnected = health?.connected === true;
+  const isDisconnected = health?.connected === false;
+
   const handleNew = () => dispatch({ type: 'NEW_CONVERSATION' });
-
   const handleSelect = (id) => dispatch({ type: 'SET_ACTIVE_CONVERSATION', id });
-
   const handleDelete = (e, id) => {
     e.stopPropagation();
     dispatch({ type: 'DELETE_CONVERSATION', id });
@@ -32,10 +34,17 @@ export default function Sidebar() {
           <FiFilm size={22} />
           <span>ScriptForge</span>
         </div>
-        <div className={`status-badge ${connected === true ? 'connected' : connected === false ? 'disconnected' : 'checking'}`}>
+        <div className={`status-badge ${isConnected ? 'connected' : isDisconnected ? 'disconnected' : 'checking'}`}>
           <span className="status-dot" />
-          {connected === true ? 'LM Studio Connected' : connected === false ? 'LM Studio Offline' : 'Checking...'}
+          {isConnected
+            ? `LM Studio Connected${health.models?.length ? ` (${health.models[0]})` : ''}`
+            : isDisconnected
+              ? 'LM Studio Offline'
+              : 'Checking...'}
         </div>
+        {isDisconnected && health.error && (
+          <div className="status-error">{health.error}</div>
+        )}
       </div>
 
       <button className="new-chat-btn" onClick={handleNew}>
