@@ -9,7 +9,7 @@
 .message-row {
   display: flex;
   gap: 14px;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -54,14 +54,9 @@
   font-size: 0.9rem;
 }
 
-.script-text {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: 'JetBrains Mono', 'Courier New', monospace;
-  font-size: 0.84rem;
-  line-height: 1.7;
+.user-text {
   margin: 0;
-  background: none;
+  line-height: 1.6;
 }
 
 .typing-indicator {

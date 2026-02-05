@@ -2,13 +2,13 @@ import os
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 from app.services.script_service import ScriptService
-from app.services.claude_service import ClaudeService
+from app.services.llm_service import LLMService
 from app.config import Config
 
 chat_bp = Blueprint("chat", __name__)
 
 script_service = ScriptService()
-claude_service = ClaudeService()
+llm_service = LLMService()
 
 
 @chat_bp.route("/generate", methods=["POST"])
@@ -25,15 +25,35 @@ def generate_script():
     if page_count not in range(30, 130, 10):
         return jsonify({"error": "Page count must be between 30-120 in increments of 10"}), 400
 
+    # Validate message format
+    for msg in messages:
+        if msg.get("role") not in ("user", "assistant"):
+            return jsonify({"error": "Each message must have role 'user' or 'assistant'"}), 400
+        if not msg.get("content"):
+            return jsonify({"error": "Each message must have non-empty content"}), 400
+
     reference_scripts = script_service.load_scripts()
 
-    result = claude_service.generate(
-        messages=messages,
-        page_count=page_count,
-        reference_scripts=reference_scripts,
-    )
+    try:
+        result = llm_service.generate(
+            messages=messages,
+            page_count=page_count,
+            reference_scripts=reference_scripts,
+        )
+    except Exception as e:
+        return jsonify({"error": f"LM Studio error: {str(e)}"}), 502
 
     return jsonify({"script": result})
+
+
+@chat_bp.route("/health", methods=["GET"])
+def health_check():
+    """Check if LM Studio is reachable."""
+    try:
+        llm_service.client.models.list()
+        return jsonify({"status": "connected"})
+    except Exception as e:
+        return jsonify({"status": "disconnected", "error": str(e)}), 503
 
 
 @chat_bp.route("/scripts", methods=["GET"])

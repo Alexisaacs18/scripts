@@ -1,0 +1,78 @@
+.script-page {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  line-height: 1.0;
+  max-width: 680px;
+  padding: 24px 0;
+  color: var(--text-primary);
+}
+
+/* Blank line spacer */
+.script-blank {
+  height: 1em;
+}
+
+/* Title page lines — centered */
+.script-title-line {
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 2px 0;
+}
+
+/* Scene headings — bold, all caps, flush left, underlined subtly */
+.script-scene-heading {
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 12px 0 4px 0;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 4px;
+  color: #e0e0e0;
+}
+
+/* Action / description — flush left, normal weight */
+.script-action {
+  padding: 2px 0;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Character name — centered, uppercase, bold */
+.script-character {
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 10px 0 2px 0;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+/* Parenthetical — centered, italic, muted */
+.script-parenthetical {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 0 0 2px 0;
+  font-size: 0.82rem;
+}
+
+/* Dialogue — indented from both sides */
+.script-dialogue {
+  margin: 0 auto;
+  max-width: 420px;
+  text-align: left;
+  padding: 1px 0;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* Transitions — right-aligned, uppercase, muted */
+.script-transition {
+  text-align: right;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 8px 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+}

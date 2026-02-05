@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiPlus, FiMessageSquare, FiTrash2, FiFilm, FiChevronDown, FiChevronRight } from 'react-icons/fi';
 import { useChat } from '../context/ChatContext';
 import ScriptManager from './ScriptManager';
+import { checkHealth } from '../services/api';
 import './Sidebar.css';
 
 export default function Sidebar() {
   const { state, dispatch } = useChat();
   const [scriptsOpen, setScriptsOpen] = useState(false);
+  const [connected, setConnected] = useState(null);
+
+  useEffect(() => {
+    checkHealth().then(setConnected);
+    const interval = setInterval(() => checkHealth().then(setConnected), 15000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleNew = () => dispatch({ type: 'NEW_CONVERSATION' });
 
@@ -23,6 +31,10 @@ export default function Sidebar() {
         <div className="logo">
           <FiFilm size={22} />
           <span>ScriptForge</span>
+        </div>
+        <div className={`status-badge ${connected === true ? 'connected' : connected === false ? 'disconnected' : 'checking'}`}>
+          <span className="status-dot" />
+          {connected === true ? 'LM Studio Connected' : connected === false ? 'LM Studio Offline' : 'Checking...'}
         </div>
       </div>
 

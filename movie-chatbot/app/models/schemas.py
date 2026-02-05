@@ -1,9 +1,15 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+
+
+@dataclass
+class ChatMessage:
+    role: str
+    content: str
 
 
 @dataclass
 class GenerateRequest:
-    prompt: str
+    messages: list = field(default_factory=list)
     page_count: int = 90
 
 

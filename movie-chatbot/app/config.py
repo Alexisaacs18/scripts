@@ -5,7 +5,9 @@ load_dotenv()
 
 
 class Config:
-    ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
+    LM_STUDIO_BASE_URL = os.getenv("LM_STUDIO_BASE_URL", "http://localhost:1234/v1")
+    LM_STUDIO_API_KEY = os.getenv("LM_STUDIO_API_KEY", "lm-studio")
+    MODEL = os.getenv("LM_STUDIO_MODEL", "default")
     SCRIPTS_DIR = os.getenv("SCRIPTS_DIR", "scripts")
-    MODEL = os.getenv("CLAUDE_MODEL", "claude-sonnet-4-5-20250929")
     MAX_TOKENS = int(os.getenv("MAX_TOKENS", "8192"))
+    TEMPERATURE = float(os.getenv("TEMPERATURE", "0.7"))

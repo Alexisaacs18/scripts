@@ -38,3 +38,13 @@ export async function generateScript({ messages, pageCount }) {
   }
   return res.json();
 }
+
+export async function checkHealth() {
+  try {
+    const res = await fetch(`${API_BASE}/health`);
+    const data = await res.json();
+    return data.status === 'connected';
+  } catch {
+    return false;
+  }
+}

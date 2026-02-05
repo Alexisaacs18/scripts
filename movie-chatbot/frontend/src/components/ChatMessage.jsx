@@ -1,4 +1,5 @@
 import { FiUser, FiCpu } from 'react-icons/fi';
+import ScriptRenderer from './ScriptRenderer';
 import './ChatMessage.css';
 
 export default function ChatMessage({ message, isGenerating }) {
@@ -18,8 +19,10 @@ export default function ChatMessage({ message, isGenerating }) {
               <span className="typing-indicator">
                 <span></span><span></span><span></span>
               </span>
+            ) : isUser ? (
+              <p className="user-text">{message.content}</p>
             ) : (
-              <pre className="script-text">{message.content}</pre>
+              <ScriptRenderer content={message.content} />
             )}
           </div>
         </div>
