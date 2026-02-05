@@ -1,0 +1,30 @@
+.page-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-selector label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.page-selector select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.page-selector select:focus {
+  outline: none;
+  border-color: var(--accent);
+}

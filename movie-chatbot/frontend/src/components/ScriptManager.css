@@ -1,0 +1,74 @@
+.script-manager {
+  padding: 4px 0 4px 22px;
+}
+
+.script-list {
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.empty-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+
+.script-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  border-radius: 4px;
+}
+
+.script-item:hover {
+  background: var(--bg-hover);
+}
+
+.script-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.script-remove {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+}
+
+.script-item:hover .script-remove {
+  opacity: 1;
+}
+
+.script-remove:hover {
+  color: var(--danger);
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: none;
+  border: 1px dashed var(--border-light);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  width: 100%;
+}
+
+.upload-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

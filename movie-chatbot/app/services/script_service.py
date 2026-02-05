@@ -5,7 +5,7 @@ from app.config import Config
 class ScriptService:
     """Handles loading and managing reference movie scripts."""
 
-    SUPPORTED_EXTENSIONS = (".txt", ".fountain", ".pdf", ".fdx")
+    SUPPORTED_EXTENSIONS = (".txt", ".fountain", ".fdx")
 
     def __init__(self):
         self.scripts_dir = Config.SCRIPTS_DIR

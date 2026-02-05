@@ -9,17 +9,15 @@ class ClaudeService:
         self.client = anthropic.Anthropic(api_key=Config.ANTHROPIC_API_KEY)
         self.model = Config.MODEL
 
-    def generate(self, prompt: str, page_count: int, reference_scripts: list[dict]) -> str:
-        """Generate a movie script using Claude, informed by reference scripts."""
+    def generate(self, messages: list[dict], page_count: int, reference_scripts: list[dict]) -> str:
+        """Generate or revise a movie script using the full conversation history."""
         system_prompt = self._build_system_prompt(reference_scripts, page_count)
 
         message = self.client.messages.create(
             model=self.model,
             max_tokens=Config.MAX_TOKENS,
             system=system_prompt,
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
+            messages=messages,
         )
 
         return message.content[0].text
@@ -46,4 +44,6 @@ INSTRUCTIONS:
 - One page of a screenplay is roughly 250 words, so target ~{page_count * 250} words.
 - Use standard screenplay format throughout.
 - Include a title page at the beginning.
-- Deliver the full script in a single response."""
+- If the user asks for changes, revisions, or edits, apply them to the most recent version
+  of the script and return the full updated script.
+- Always deliver the complete script in your response."""
