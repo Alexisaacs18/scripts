@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Script Generator</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Movie Script Generator</h1>
+            <p class="subtitle">Describe your movie and get a full screenplay</p>
+        </header>
+
+        <div class="controls">
+            <label for="page-count">Script Length</label>
+            <select id="page-count">
+                <option value="30">30 pages</option>
+                <option value="40">40 pages</option>
+                <option value="50">50 pages</option>
+                <option value="60">60 pages</option>
+                <option value="70">70 pages</option>
+                <option value="80">80 pages</option>
+                <option value="90" selected>90 pages</option>
+                <option value="100">100 pages</option>
+                <option value="110">110 pages</option>
+                <option value="120">120 pages</option>
+            </select>
+        </div>
+
+        <div class="chat-window" id="chat-window">
+            <div class="message system">
+                <p>Welcome! Describe the movie you'd like me to write a script for. Be as detailed or brief as you'd like — include genre, characters, setting, themes, or just a one-line concept.</p>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <textarea
+                id="prompt-input"
+                placeholder="Describe your movie idea..."
+                rows="3"
+            ></textarea>
+            <button id="send-btn" onclick="sendPrompt()">Generate</button>
+        </div>
+
+        <div class="scripts-info" id="scripts-info"></div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
