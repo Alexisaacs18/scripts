@@ -5,8 +5,8 @@ load_dotenv()
 
 
 class Config:
-    LM_STUDIO_BASE_URL = os.getenv("LM_STUDIO_BASE_URL", "http://localhost:1234/v1")
-    LM_STUDIO_API_KEY = os.getenv("LM_STUDIO_API_KEY", "lm-studio")
+    LM_STUDIO_BASE_URL = os.getenv("LM_STUDIO_BASE_URL", "http://127.0.0.1:1234")
+    LM_STUDIO_API_KEY = os.getenv("LM_STUDIO_API_KEY", "openai/gpt-oss-20b")
     MODEL = os.getenv("LM_STUDIO_MODEL", "default")
     SCRIPTS_DIR = os.getenv("SCRIPTS_DIR", "scripts")
     MAX_TOKENS = int(os.getenv("MAX_TOKENS", "8192"))
