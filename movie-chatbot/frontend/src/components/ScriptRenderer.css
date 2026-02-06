@@ -30,6 +30,16 @@
   color: #e0e0e0;
 }
 
+/* Camera directions — flush left, bold, distinct color */
+.script-camera {
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 8px 0 2px 0;
+  letter-spacing: 0.03em;
+  color: #81a1c1;
+  font-size: 0.83rem;
+}
+
 /* Action / description — flush left, normal weight */
 .script-action {
   padding: 2px 0;

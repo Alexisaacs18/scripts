@@ -41,6 +41,15 @@ export default function ScriptRenderer({ content }) {
       continue;
     }
 
+    // Camera directions: CLOSE ON, WIDE SHOT, ANGLE ON, etc.
+    if (/^(CLOSE ON|CLOSE UP|EXTREME CLOSE UP|WIDE SHOT|MEDIUM SHOT|LONG SHOT|ANGLE ON|POV|TRACKING SHOT|PAN TO|PAN ACROSS|DOLLY|CRANE SHOT|AERIAL SHOT|OVER THE SHOULDER|TWO SHOT|THREE SHOT|INSERT|REVERSE ANGLE|HIGH ANGLE|LOW ANGLE|BIRD'S EYE|STEADICAM|PUSH IN|PULL BACK|RACK FOCUS|SPLIT SCREEN|FREEZE FRAME|SLOW MOTION|BACK TO SCENE|CONTINUOUS)\b/i.test(trimmed) && trimmed === trimmed.toUpperCase()) {
+      elements.push(
+        <div key={i} className="script-camera">{trimmed}</div>
+      );
+      i++;
+      continue;
+    }
+
     // Transitions: CUT TO:, FADE IN:, FADE OUT., DISSOLVE TO:, etc.
     if (/^(FADE IN:|FADE OUT\.|FADE TO BLACK\.|CUT TO:|SMASH CUT TO:|MATCH CUT TO:|DISSOLVE TO:|JUMP CUT TO:|INTERCUT|THE END\.?)$/i.test(trimmed)) {
       elements.push(

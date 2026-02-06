@@ -1,10 +1,11 @@
 import os
 import urllib.request
 import json
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, Response
 from werkzeug.utils import secure_filename
 from app.services.script_service import ScriptService
 from app.services.llm_service import LLMService
+from app.services.pdf_service import generate_pdf
 from app.config import Config
 
 chat_bp = Blueprint("chat", __name__)
@@ -75,6 +76,31 @@ def health_check():
             "url": base_url,
             "error": str(e),
         }), 503
+
+
+@chat_bp.route("/export-pdf", methods=["POST"])
+def export_pdf():
+    """Export screenplay text as a formatted PDF."""
+    data = request.get_json()
+    script_text = data.get("script", "")
+    title = data.get("title", "Untitled Scene")
+
+    if not script_text.strip():
+        return jsonify({"error": "No script content provided"}), 400
+
+    try:
+        pdf_bytes = generate_pdf(script_text, title)
+    except Exception as e:
+        return jsonify({"error": f"PDF generation failed: {str(e)}"}), 500
+
+    safe_title = "".join(c for c in title if c.isalnum() or c in " _-").strip() or "scene"
+    filename = f"{safe_title}.pdf"
+
+    return Response(
+        pdf_bytes,
+        mimetype="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 
 @chat_bp.route("/scripts", methods=["GET"])

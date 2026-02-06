@@ -39,6 +39,19 @@ export async function generateScript({ messages, pageCount }) {
   return res.json();
 }
 
+export async function exportPDF({ script, title }) {
+  const res = await fetch(`${API_BASE}/export-pdf`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ script, title }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: 'Export failed' }));
+    throw new Error(err.error || 'PDF export failed');
+  }
+  return res.blob();
+}
+
 export async function checkHealth() {
   try {
     const res = await fetch(`${API_BASE}/health`);

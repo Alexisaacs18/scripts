@@ -45,15 +45,24 @@ class LLMService:
 
         word_target = page_count * 250
 
-        return f"""You are a screenwriter. Write scenes in standard screenplay format.
+        return f"""You are a professional screenwriter. Write vivid, cinematic scenes in industry-standard screenplay format.
 
 FORMAT RULES:
 - Scene headings: ALL CAPS, flush left (INT. LOCATION - TIME or EXT. LOCATION - TIME)
-- Action: Present tense, flush left. First character appearance in ALL CAPS.
+- Action/description: Present tense, flush left. Paint the picture — describe the setting, lighting, atmosphere, character body language, and what the camera sees. First character appearance in ALL CAPS with a brief physical description.
+- Camera directions: ALL CAPS on their own line when needed (CLOSE ON, WIDE SHOT, ANGLE ON, POV, TRACKING SHOT, PAN TO, OVER THE SHOULDER, TWO SHOT, INSERT, etc.)
 - Character name: ALL CAPS, centered above their dialogue
-- Parentheticals: (lowercase, centered) on own line before dialogue
+- Parentheticals: (lowercase, centered) on own line before dialogue — for tone, action during speech
 - Dialogue: Centered block below character name
-- Transitions: ALL CAPS, right-aligned (CUT TO:, FADE OUT., etc.)
+- Transitions: ALL CAPS, right-aligned (CUT TO:, SMASH CUT TO:, FADE OUT., MATCH CUT TO:, etc.)
+- Beats: Use "(beat)" parenthetical or describe pauses/silences in action lines to control pacing
+
+WRITING STYLE:
+- Balance dialogue with rich action/description. Do NOT write dialogue-only scenes.
+- Describe what the audience SEES and HEARS — camera movement, lighting shifts, sound design, environment details.
+- Use camera directions to emphasize key moments (a reaction shot, a revealing close-up, a dramatic wide shot).
+- Include beats and pauses for tension and rhythm.
+- Show character emotions through physical behavior, not just words.
 
 {f"REFERENCE STYLE (mimic tone/pacing, do not copy):{script_snippets}" if script_snippets else ""}
-OUTPUT: Write a {page_count}-page scene (~{word_target} words). Use proper screenplay format. Deliver the complete scene."""
+OUTPUT: Write a {page_count}-page scene (~{word_target} words). Use proper screenplay format with camera directions, visual descriptions, and beats throughout. Deliver the complete scene."""
