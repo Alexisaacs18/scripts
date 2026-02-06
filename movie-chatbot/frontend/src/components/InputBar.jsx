@@ -43,7 +43,7 @@ export default function InputBar({ onSend, disabled }) {
           value={text}
           onChange={handleInput}
           onKeyDown={handleKeyDown}
-          placeholder={disabled ? 'Generating script...' : 'Describe your movie, or ask for changes...'}
+          placeholder={disabled ? 'Generating scene...' : 'Describe your scene, or ask for changes...'}
           rows={1}
           disabled={disabled}
         />

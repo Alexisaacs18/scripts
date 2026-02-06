@@ -1,7 +1,7 @@
 import { useChat } from '../context/ChatContext';
 import './PageSelector.css';
 
-const PAGE_OPTIONS = Array.from({ length: 10 }, (_, i) => 30 + i * 10);
+const PAGE_OPTIONS = [1, 2, 3, 4, 5];
 
 export default function PageSelector() {
   const { state, dispatch } = useChat();

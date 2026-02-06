@@ -53,7 +53,7 @@ export default function ScriptManager() {
       <input
         ref={fileRef}
         type="file"
-        accept=".txt,.fountain,.fdx"
+        accept=".txt,.fountain,.fdx,.pdf"
         hidden
         onChange={handleUpload}
       />

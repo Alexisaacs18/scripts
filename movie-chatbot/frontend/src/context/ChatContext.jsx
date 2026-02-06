@@ -5,7 +5,7 @@ const ChatContext = createContext(null);
 const initialState = {
   conversations: [],
   activeConversationId: null,
-  pageCount: 90,
+  pageCount: 3,
   scripts: [],
   isGenerating: false,
 };

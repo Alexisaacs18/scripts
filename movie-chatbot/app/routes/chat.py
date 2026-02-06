@@ -19,13 +19,13 @@ def generate_script():
     data = request.get_json()
 
     messages = data.get("messages")
-    page_count = data.get("page_count", 90)
+    page_count = data.get("page_count", 3)
 
     if not messages or not isinstance(messages, list):
         return jsonify({"error": "A messages array is required"}), 400
 
-    if page_count not in range(30, 130, 10):
-        return jsonify({"error": "Page count must be between 30-120 in increments of 10"}), 400
+    if page_count not in range(1, 6):
+        return jsonify({"error": "Page count must be between 1-5"}), 400
 
     # Validate message format
     for msg in messages:
@@ -95,7 +95,7 @@ def upload_script():
         return jsonify({"error": "No file selected"}), 400
 
     filename = secure_filename(file.filename)
-    allowed = (".txt", ".fountain", ".fdx")
+    allowed = (".txt", ".fountain", ".fdx", ".pdf")
     if not filename.lower().endswith(allowed):
         return jsonify({"error": f"Unsupported file type. Use: {', '.join(allowed)}"}), 400
 

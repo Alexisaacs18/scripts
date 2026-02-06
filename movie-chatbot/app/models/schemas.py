@@ -10,7 +10,7 @@ class ChatMessage:
 @dataclass
 class GenerateRequest:
     messages: list = field(default_factory=list)
-    page_count: int = 90
+    page_count: int = 3
 
 
 @dataclass
