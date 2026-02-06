@@ -5,7 +5,7 @@ const ChatContext = createContext(null);
 const initialState = {
   conversations: [],
   activeConversationId: null,
-  pageCount: 3,
+  pageCount: 2,
   scripts: [],
   isGenerating: false,
 };
@@ -18,7 +18,7 @@ function chatReducer(state, action) {
   switch (action.type) {
     case 'NEW_CONVERSATION': {
       const id = generateId();
-      const conv = { id, title: 'New Script', messages: [], generatedScript: null };
+      const conv = { id, title: 'New Scene', messages: [], generatedScript: null };
       return {
         ...state,
         conversations: [conv, ...state.conversations],

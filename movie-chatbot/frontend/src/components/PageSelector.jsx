@@ -1,14 +1,12 @@
 import { useChat } from '../context/ChatContext';
 import './PageSelector.css';
 
-const PAGE_OPTIONS = [1, 2, 3, 4, 5];
-
 export default function PageSelector() {
   const { state, dispatch } = useChat();
 
   return (
     <div className="page-selector">
-      <label htmlFor="page-select">Pages</label>
+      <label htmlFor="page-select">Scene Length</label>
       <select
         id="page-select"
         value={state.pageCount}
@@ -16,11 +14,11 @@ export default function PageSelector() {
           dispatch({ type: 'SET_PAGE_COUNT', pageCount: parseInt(e.target.value) })
         }
       >
-        {PAGE_OPTIONS.map((n) => (
-          <option key={n} value={n}>
-            {n}
-          </option>
-        ))}
+        <option value={1}>1 page</option>
+        <option value={2}>2 pages</option>
+        <option value={3}>3 pages</option>
+        <option value={4}>4 pages</option>
+        <option value={5}>5 pages</option>
       </select>
     </div>
   );

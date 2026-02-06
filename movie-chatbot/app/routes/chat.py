@@ -15,17 +15,17 @@ llm_service = LLMService()
 
 @chat_bp.route("/generate", methods=["POST"])
 def generate_script():
-    """Generate or revise a movie script based on conversation history."""
+    """Generate or revise a scene based on conversation history."""
     data = request.get_json()
 
     messages = data.get("messages")
-    page_count = data.get("page_count", 3)
+    page_count = data.get("page_count", 2)
 
     if not messages or not isinstance(messages, list):
         return jsonify({"error": "A messages array is required"}), 400
 
     if page_count not in range(1, 6):
-        return jsonify({"error": "Page count must be between 1-5"}), 400
+        return jsonify({"error": "Page count must be between 1 and 5"}), 400
 
     # Validate message format
     for msg in messages:

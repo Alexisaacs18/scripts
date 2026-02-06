@@ -74,11 +74,11 @@ export default function ChatWindow() {
         {conversation.messages.length === 0 && (
           <div className="welcome">
             <div className="welcome-icon">&#127916;</div>
-            <h3>What movie should we write?</h3>
+            <h3>Describe your scene</h3>
             <p>
-              Describe your concept — genre, characters, setting, themes — or
-              just give a one-liner. After the first draft, you can ask for
-              rewrites, scene changes, character tweaks, and more.
+              Set the stage — who's in the scene, where it takes place, what
+              happens, the mood. After the first draft you can ask for rewrites,
+              dialogue changes, pacing tweaks, and more.
             </p>
           </div>
         )}

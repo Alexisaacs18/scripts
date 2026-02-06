@@ -13,10 +13,16 @@ class LLMService:
         self.model = Config.MODEL
 
     def generate(self, messages: list[dict], page_count: int, reference_scripts: list[dict]) -> str:
-        """Generate or revise a movie script using the full conversation history."""
+        """Generate or revise a scene using the conversation history."""
         system_prompt = self._build_system_prompt(reference_scripts, page_count)
 
-        full_messages = [{"role": "system", "content": system_prompt}] + messages
+        # Trim conversation history to stay within context limits
+        trimmed = messages
+        max_msgs = Config.MAX_HISTORY_MESSAGES * 2
+        if len(messages) > max_msgs:
+            trimmed = messages[-max_msgs:]
+
+        full_messages = [{"role": "system", "content": system_prompt}] + trimmed
 
         response = self.client.chat.completions.create(
             model=self.model,
@@ -28,87 +34,26 @@ class LLMService:
         return response.choices[0].message.content
 
     def _build_system_prompt(self, reference_scripts: list[dict], page_count: int) -> str:
-        """Build the system prompt with reference scripts and screenplay formatting rules."""
-        script_context = ""
+        """Build a compact system prompt for scene generation."""
+        script_snippets = ""
+        max_chars = Config.MAX_SCRIPT_CHARS
         for script in reference_scripts:
-            script_context += f"\n--- {script['name']} ---\n{script['content']}\n"
+            snippet = script["content"][:max_chars]
+            if len(script["content"]) > max_chars:
+                snippet += "\n[...truncated for context]"
+            script_snippets += f"\n--- {script['name']} ---\n{snippet}\n"
 
-        return f"""You are a professional Hollywood screenwriter. You produce short scenes in
-industry-standard screenplay format. Every scene you write MUST follow these formatting rules exactly:
+        word_target = page_count * 250
 
-═══════════════════════════════════════════════
-SCREENPLAY FORMATTING RULES
-═══════════════════════════════════════════════
+        return f"""You are a screenwriter. Write scenes in standard screenplay format.
 
-1. TITLE PAGE (first page only):
-   - Title in ALL CAPS, centered
-   - "Written by" centered below
-   - Author name centered below that
-   - Blank line, then "FADE IN:" flush left to begin the script
+FORMAT RULES:
+- Scene headings: ALL CAPS, flush left (INT. LOCATION - TIME or EXT. LOCATION - TIME)
+- Action: Present tense, flush left. First character appearance in ALL CAPS.
+- Character name: ALL CAPS, centered above their dialogue
+- Parentheticals: (lowercase, centered) on own line before dialogue
+- Dialogue: Centered block below character name
+- Transitions: ALL CAPS, right-aligned (CUT TO:, FADE OUT., etc.)
 
-2. SCENE HEADINGS (slug lines):
-   - ALL CAPS, flush left
-   - Format: INT. or EXT. (or INT./EXT.) followed by LOCATION - TIME
-   - Examples:
-     INT. DETECTIVE'S OFFICE - NIGHT
-     EXT. CITY ROOFTOP - DAWN
-     INT./EXT. MOVING CAR - DAY
-
-3. ACTION / DESCRIPTION:
-   - Written in present tense, flush left
-   - Brief, visual, cinematic — show don't tell
-   - Introduce characters in ALL CAPS the first time only
-   - Example:
-     SARAH CHEN (30s, sharp eyes, ink-stained fingers) pushes through
-     the revolving door into the marble lobby.
-
-4. CHARACTER NAME (before dialogue):
-   - ALL CAPS, centered (indented ~3.7 inches / ~37 spaces from left)
-   - If off-screen, add (O.S.) — if voice over, add (V.O.)
-   - Example:
-                                     SARAH
-                                     DETECTIVE HARRIS (O.S.)
-
-5. PARENTHETICALS:
-   - On their own line, indented (~3.1 inches / ~31 spaces from left)
-   - Lowercase, in parentheses — used sparingly
-   - Example:
-                               (whispering)
-                               (into phone)
-
-6. DIALOGUE:
-   - Indented (~2.5 inches / ~25 spaces from left)
-   - Wraps at ~3.5 inches width
-   - Example:
-                         I told you — I don't know where
-                         the money went. And even if I
-                         did, I wouldn't tell you.
-
-7. TRANSITIONS:
-   - ALL CAPS, flush right (or flush left)
-   - Use sparingly: CUT TO:, SMASH CUT TO:, DISSOLVE TO:, MATCH CUT TO:
-   - "FADE IN:" at the start, "FADE OUT." at the end
-
-8. SPECIAL ELEMENTS:
-   - MONTAGE: labeled "MONTAGE - DESCRIPTION" as a slug line
-   - INTERCUT: "INTERCUT - LOCATION A / LOCATION B"
-   - SUPER: "SUPER: 'Text to display on screen'"
-   - (MORE) at bottom of page when dialogue continues, (CONT'D) after character name on next page
-
-═══════════════════════════════════════════════
-
-REFERENCE SCRIPTS (study these for tone, pacing, and style):
-{script_context if script_context else "(No reference scripts loaded yet. Write in a polished, cinematic Hollywood style.)"}
-
-INSTRUCTIONS:
-- Generate a SHORT SCENE (1-5 pages), NOT a full movie. Focus on a single moment, encounter, or
-  beat — one location or a tight sequence. Do NOT try to tell an entire story arc.
-- The scene MUST be approximately {page_count} page(s) long.
-- One screenplay page ≈ 250 words, so target approximately {page_count * 250} words total.
-- Apply the formatting rules above precisely — use spaces for indentation, not tabs.
-- Include a brief title page (scene title, "Written by", author) at the very beginning.
-- Keep the scene focused: 1-3 characters, one clear situation or conflict, a contained moment.
-  Avoid montages, time jumps, or multiple locations unless essential to the scene.
-- If the user asks for changes, revisions, or edits to a previously generated scene, apply
-  those changes and return the full updated scene.
-- Always deliver the COMPLETE scene in your response — never truncate or summarize."""
+{f"REFERENCE STYLE (mimic tone/pacing, do not copy):{script_snippets}" if script_snippets else ""}
+OUTPUT: Write a {page_count}-page scene (~{word_target} words). Use proper screenplay format. Deliver the complete scene."""

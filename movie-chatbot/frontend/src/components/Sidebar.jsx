@@ -49,11 +49,11 @@ export default function Sidebar() {
 
       <button className="new-chat-btn" onClick={handleNew}>
         <FiPlus size={16} />
-        <span>New Script</span>
+        <span>New Scene</span>
       </button>
 
       <nav className="conversation-list">
-        <div className="section-label">Conversations</div>
+        <div className="section-label">Scenes</div>
         {state.conversations.map((conv) => (
           <div
             key={conv.id}
@@ -65,7 +65,7 @@ export default function Sidebar() {
             <button
               className="delete-btn"
               onClick={(e) => handleDelete(e, conv.id)}
-              aria-label="Delete conversation"
+              aria-label="Delete scene"
             >
               <FiTrash2 size={13} />
             </button>
